@@ -51,4 +51,11 @@ export const dataApi = createApi({
     }
 })
 
-export const { useGetEIdQuery, useGetDataQuery, useLazyGetDataQuery, useLazyCreateRowQuery } = dataApi;
+export const {
+    useGetEIdQuery,
+    useGetDataQuery,
+    useLazyGetDataQuery,
+    useLazyCreateRowQuery,
+    useLazyDeleteRowQuery,
+    useLazyUpdateRowQuery
+ } = dataApi;

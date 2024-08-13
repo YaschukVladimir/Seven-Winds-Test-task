@@ -18,7 +18,6 @@ export type CreateRowData = {
   }
 
 export type EntityType = {
-    child?: number | null[],
     id: number,
     rowName: string,
     total: number,
@@ -31,7 +30,24 @@ export type EntityType = {
     equipmentCosts: number,
     overheads: number,
     estimatedProfit: number
+    child: EntityType[]
 }
+
+// export type ParentEntitytype = {
+//     id: number,
+//     rowName: string,
+//     total: number,
+//     salary: number,
+//     mimExploitation: number,
+//     machineOperatorSalary: number,
+//     materials: number,
+//     mainCosts: number,
+//     supportCosts: number,
+//     equipmentCosts: number,
+//     overheads: number,
+//     estimatedProfit: number,
+//     child: EntityType[]
+// }
 
 export type ResponseData = {
     current: EntityType,

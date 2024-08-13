@@ -1,10 +1,11 @@
-import { Row } from "../row/row";
+
+import CollapsibleTable from "../table/table";
 import "./main.scss";
 
 function Main(): React.JSX.Element {
     return (
         <section className="main">
-            <div className="main__title">Строительно-монтажные работы</div>
+            {/* <div className="main__title">Строительно-монтажные работы</div>
             <div className="main__data">
                 <div className="main__data-title">
                     <div className="main__data-text">Уровень</div>
@@ -20,7 +21,8 @@ function Main(): React.JSX.Element {
                     <Row />
                     <Row />
                 </ul>
-            </div>
+            </div> */}
+            <CollapsibleTable />
         </section>
     )
 }
