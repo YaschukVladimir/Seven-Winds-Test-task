@@ -16,7 +16,7 @@ const theme = createTheme({
 
 function App(): React.JSX.Element {
 
-  const [getdata, { data: rowsData }] = useLazyGetDataQuery();
+  const [getdata] = useLazyGetDataQuery();
 
   useEffect(() => {
     getdata(EID);
