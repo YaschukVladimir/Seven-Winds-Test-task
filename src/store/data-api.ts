@@ -14,7 +14,7 @@ type UpdateRowRequest = {
 
 export const dataApi = createApi({
     reducerPath: 'dataApi',
-    baseQuery: fetchBaseQuery({baseUrl: 'http://185.244.172.108:8081/'}),
+    baseQuery: fetchBaseQuery({baseUrl: 'https://185.244.172.108:8081/'}),
     endpoints: (build) => {
         return {
             getEId: build.query({
