@@ -22,9 +22,6 @@ function App(): React.JSX.Element {
     getdata(EID);
   }, []);
 
-  console.log(rowsData, 'data');
-
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
