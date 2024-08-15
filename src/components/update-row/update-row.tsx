@@ -3,16 +3,20 @@ import { CreateRowData } from "../../types/types";
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import { useState } from "react";
 import { EID } from "../../const/const";
-import { useLazyCreateRowQuery, useLazyGetDataQuery, useLazyUpdateRowQuery } from "../../store/data-api";
+import { useLazyCreateRowQuery, useLazyUpdateRowQuery } from "../../store/data-api";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { addRow, changeRow, setIsAddingRow, setIsUpdatingRow } from "../../store/app-slice";
 
 type UpdateRowProps = {
-    setIsAddingChild?: (bool: boolean) => void;
-    setIsUpdatingRow?: (bool: boolean) => void;
     rowId: number;
 }
 
-function UpdateRow({ rowId, setIsAddingChild, setIsUpdatingRow }: UpdateRowProps): React.JSX.Element {
-    const [getData, {isLoading}] = useLazyGetDataQuery();
+function UpdateRow({ rowId }: UpdateRowProps): React.JSX.Element {
+
+    const dispatch = useAppDispatch();
+    const isUpdatingRow = useAppSelector((state) => state.appSlice.isUpdatingRow);
+    const isAddingRow = useAppSelector((state) => state.appSlice.isAddingRow);
+
     const [createRow] = useLazyCreateRowQuery();
     const [updateRow] = useLazyUpdateRowQuery();
 
@@ -24,7 +28,7 @@ function UpdateRow({ rowId, setIsAddingChild, setIsUpdatingRow }: UpdateRowProps
         materials: 0,
         mimExploitation: 0,
         overheads: 0,
-        parentId: rowId,
+        parentId: rowId === 0 ? null : rowId,
         rowName: "",
         salary: 0,
         supportCosts: 0
@@ -40,28 +44,36 @@ function UpdateRow({ rowId, setIsAddingChild, setIsUpdatingRow }: UpdateRowProps
     };
 
     const handleKeyPress = (e: React.KeyboardEvent) => {
-        if (setIsAddingChild !== undefined) {
+        if (isAddingRow) {
             if (e.key === 'Enter') {
                 createRow({
                     eID: EID,
                     body: newChild
                 }).unwrap()
-                    .then(() => {
-                        getData(EID);
-                        setIsAddingChild(false);
+                    .then((res) => {
+                        const payload = {
+                            res,
+                            rowId: rowId
+                        };
+                        dispatch(addRow(payload));
+                        dispatch(setIsAddingRow(false));
                     }) 
             }
         }
-        if (setIsUpdatingRow !== undefined) {
+        if (isUpdatingRow) {
             if (e.key === 'Enter') {
                 updateRow({
                     eID: EID,
                     rID: rowId,
                     body: newChild
                 }).unwrap()
-                    .then(() => {
-                        getData(EID);
-                        setIsUpdatingRow(false);
+                    .then((res) => {
+                        const payload = {
+                            res,
+                            rowId: rowId
+                        };
+                        dispatch(changeRow(payload));
+                        dispatch(setIsUpdatingRow(false));
                     })
                 
             }
@@ -70,23 +82,13 @@ function UpdateRow({ rowId, setIsAddingChild, setIsUpdatingRow }: UpdateRowProps
     };
 
     return (
-        <TableRow>
-            <TableCell sx={{ pl: 4 }}>
-                <Box sx={{ position: 'relative' }}>
-                    <Box
-                        sx={{
-                            position: 'absolute',
-                            top: 0,
-                            left: 8,
-                            width: '2px',
-                            height: '50%',
-                            backgroundColor: 'black',
-                        }}
-                    />
+        <TableRow >
+            <TableCell sx={{ pl: 4, borderBottom: 'none' }}>
+                <Box sx={{ position: 'relative'}}>
                     <TextSnippetIcon />
                 </Box>
             </TableCell>
-            <TableCell>
+            <TableCell sx={{borderBottom: 'none'}}>
                 <TextField
                     name="rowName"
                     value={newChild.rowName}
@@ -96,7 +98,7 @@ function UpdateRow({ rowId, setIsAddingChild, setIsUpdatingRow }: UpdateRowProps
                     size="small"
                 />
             </TableCell>
-            <TableCell>
+            <TableCell sx={{borderBottom: 'none'}}>
                 <TextField
                     name="salary"
                     type="number"
@@ -107,7 +109,7 @@ function UpdateRow({ rowId, setIsAddingChild, setIsUpdatingRow }: UpdateRowProps
                     size="small"
                 />
             </TableCell>
-            <TableCell>
+            <TableCell sx={{borderBottom: 'none'}}>
                 <TextField
                     name="equipmentCosts"
                     type="number"
@@ -118,7 +120,7 @@ function UpdateRow({ rowId, setIsAddingChild, setIsUpdatingRow }: UpdateRowProps
                     size="small"
                 />
             </TableCell>
-            <TableCell>
+            <TableCell sx={{borderBottom: 'none'}}>
                 <TextField
                     name="supportCosts"
                     type="number"
@@ -129,7 +131,7 @@ function UpdateRow({ rowId, setIsAddingChild, setIsUpdatingRow }: UpdateRowProps
                     size="small"
                 />
             </TableCell>
-            <TableCell>
+            <TableCell sx={{borderBottom: 'none'}}>
                 <TextField
                     name="estimatedProfit"
                     type="number"

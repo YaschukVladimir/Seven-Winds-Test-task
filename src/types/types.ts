@@ -1,3 +1,6 @@
+import { NameSpace } from "../const/const";
+import { store } from "../store";
+
 export type EID = {
     id: number;
     rowName: string;
@@ -31,25 +34,21 @@ export type EntityType = {
     overheads: number,
     estimatedProfit: number
     child: EntityType[]
-}
+};
 
-// export type ParentEntitytype = {
-//     id: number,
-//     rowName: string,
-//     total: number,
-//     salary: number,
-//     mimExploitation: number,
-//     machineOperatorSalary: number,
-//     materials: number,
-//     mainCosts: number,
-//     supportCosts: number,
-//     equipmentCosts: number,
-//     overheads: number,
-//     estimatedProfit: number,
-//     child: EntityType[]
-// }
+export const slice = {
+    app: NameSpace.appSlice
+};
 
 export type ResponseData = {
     current: EntityType,
     changed: EntityType[]
+};
+
+export type State = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
+
+export type PayloadForStore = {
+    rowId: number;
+    res: ResponseData;
 }

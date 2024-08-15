@@ -1,35 +1,39 @@
 import { useEffect } from "react";
-import { useGetDataQuery, useGetEIdQuery, useLazyCreateRowQuery, useLazyGetDataQuery } from "../../store/data-api";
+import { useLazyGetDataQuery } from "../../store/data-api";
 import ButtonAppBar from "../header/header";
-import Main from "../main/main";
 import SideBar from "../side-bar/side-bar";
-import "./App.scss";
 import { EID } from "../../const/const";
+import { ThemeProvider, createTheme, CssBaseline, Box } from "@mui/material";
+import CollapsibleTable from "../table/table";
+
+
+const theme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
 
 
 function App(): React.JSX.Element {
 
-  // const { data: eID, isSuccess } = useGetEIdQuery('');
   const [getdata, { data: rowsData }] = useLazyGetDataQuery();
-  const [createRow, { data: createdRow }] = useLazyCreateRowQuery();
-
 
   useEffect(() => {
-      getdata(EID);
+    getdata(EID);
   }, []);
 
   console.log(rowsData, 'data');
 
 
   return (
-    <>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
       <ButtonAppBar />
-      <div className="app__wrapper">
+      <Box sx={{display: "grid", padding: 0, gridTemplateColumns: '1fr 4fr'}}>
         <SideBar />
-        <Main />
-      </div>
-
-    </>
+        <CollapsibleTable />
+      </Box>
+    </ThemeProvider>
   )
 }
 

@@ -1,293 +1,52 @@
-// import TextSnippetIcon from '@mui/icons-material/TextSnippet';
-// import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-// import "./row.scss";
-// import { TableRow, TableCell, IconButton, Box, TextField } from '@mui/material';
-// import { useEffect, useState } from 'react';
-// import { CreateRowData, EntityType } from '../../types/types';
-// import { useLazyCreateRowQuery, useLazyDeleteRowQuery, useLazyGetDataQuery } from '../../store/data-api';
-// import { EID } from '../../const/const';
-// import ChildRow from '../child-row/child-row';
-// import UpdateRow from '../update-row/update-row';
-
-
-// type RowProps = {
-//     row: EntityType;
-// };
-
-// function Row({ row }: RowProps) {
-
-//     console.log(row, 'row');
-
-//     const [getData] = useLazyGetDataQuery();
-//     const [createRow, { data: createdRow, isLoading: isRowCreating, isSuccess: isRowCreated }] = useLazyCreateRowQuery();
-//     const [deleteRow, { isSuccess: isRowDeleted }] = useLazyDeleteRowQuery();
-
-//     const [isAddingChild, setIsAddingChild] = useState<boolean>(false);
-//     const [newChild, setNewChild] = useState<CreateRowData>({
-//         equipmentCosts: 0,
-//         estimatedProfit: 0,
-//         machineOperatorSalary: 0,
-//         mainCosts: 0,
-//         materials: 0,
-//         mimExploitation: 0,
-//         overheads: 0,
-//         parentId: row.id,
-//         rowName: "string",
-//         salary: 0,
-//         supportCosts: 0
-//     });
-
-//     const handleDeleterow = (rowId: number): void => {
-//         deleteRow({ eID: EID, rID: rowId });
-//     }
-
-//     const handleAddChild = (rowId: number) => {
-//         setIsAddingChild(true);
-//         setNewChild((prevChild) => ({
-//             ...prevChild,
-//             parentId: rowId
-//         }))
-//     };
-
-//     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-//         const { name, value } = e.target;
-//         setNewChild((prevChild) => ({
-//             ...prevChild,
-//             [name]: value,
-//         }));
-//     };
-
-//     const handleKeyPress = (e: React.KeyboardEvent) => {
-//         if (e.key === 'Enter') {
-//             setIsAddingChild(false);
-//             createRow({
-//                 eID: EID,
-//                 body: newChild
-//             });
-//             console.log(createdRow, 'ssss');
-//             // getData(EID);
-//             // onAddChild(row.id);
-//         }
-//     };
-
-//     function renderChildRows (row: EntityType) {
-//         if (row.child.length) {
-//             row.child.map((childRow, index) => (
-//                 <TableRow key={childRow.id}>
-//                     <TableCell sx={{ pl: 4, position: 'relative' }}>
-//                         <Box
-//                             sx={{
-//                                 position: 'absolute',
-//                                 top: 0,
-//                                 left: 8,
-//                                 width: '2px',
-//                                 height: index === 0 ? '50%' : '100%',
-//                                 backgroundColor: 'black',
-//                             }}
-//                         />
-//                         <IconButton onClick={() => handleAddChild(childRow.id)}>
-//                             <TextSnippetIcon />
-//                         </IconButton>
-//                         <IconButton onClick={() => handleDeleterow(childRow.id)}>
-//                             <DeleteForeverIcon />
-//                         </IconButton>
-//                     </TableCell>
-//                     <TableCell>{childRow.rowName}</TableCell>
-//                     <TableCell>{childRow.salary}</TableCell>
-//                     <TableCell>{childRow.equipmentCosts}</TableCell>
-//                     <TableCell>{childRow.supportCosts}</TableCell>
-//                     <TableCell>{childRow.estimatedProfit}</TableCell>
-//                 </TableRow>
-//             ))
-//         }
-//     }
-
-//     useEffect(() => {
-//         if (isRowCreated || isRowDeleted) {
-//             getData(EID);
-//         }
-//     }, [isRowCreated, isRowDeleted]);
-
-//     return (
-//         <>
-//             <TableRow>
-//                 <TableCell>
-//                     <IconButton onClick={() => handleAddChild(row.id)}>
-//                         <TextSnippetIcon />
-//                     </IconButton>
-//                     <IconButton onClick={() => handleDeleterow(row.id)}>
-//                         <DeleteForeverIcon />
-//                     </IconButton>
-//                 </TableCell>
-//                 <TableCell>{row.rowName}</TableCell>
-//                 <TableCell>{row.salary}</TableCell>
-//                 <TableCell>{row.equipmentCosts}</TableCell>
-//                 <TableCell>{row.supportCosts}</TableCell>
-//                 <TableCell>{row.estimatedProfit}</TableCell>
-//             </TableRow>
-//             {row.child.length && row.child.map((childRow, index) => (
-//                 <ChildRow childRow={childRow} index={index} handleAddChild={handleAddChild} handleDeleteRow={handleDeleterow}/>
-//             ))}
-
-//             {isAddingChild && (
-//                 <UpdateRow newChild={newChild} handleInputChange={handleInputChange} handleKeyPress={handleKeyPress}/>
-//             )}
-//         </>
-//     );
-// }
-
-// export default Row;
-
-
-// import TextSnippetIcon from '@mui/icons-material/TextSnippet';
-// import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-// import "./row.scss";
-// import { TableRow, TableCell, IconButton, Box } from '@mui/material';
-// import { useEffect, useState } from 'react';
-// import { CreateRowData, EntityType } from '../../types/types';
-// import { useLazyCreateRowQuery, useLazyDeleteRowQuery, useLazyGetDataQuery } from '../../store/data-api';
-// import { EID } from '../../const/const';
-// import UpdateRow from '../update-row/update-row';
-
-
-// type RowProps = {
-//     row: EntityType;
-//     depth?: number;
-// };
-
-// function Row({ row, depth = 0 }: RowProps) {
-//     const [getData] = useLazyGetDataQuery();
-//     const [createRow, { isSuccess: isRowCreated }] = useLazyCreateRowQuery();
-//     const [deleteRow, { isSuccess: isRowDeleted }] = useLazyDeleteRowQuery();
-
-//     const [isAddingChild, setIsAddingChild] = useState<boolean>(false);
-//     const [newChild, setNewChild] = useState<CreateRowData>({
-//         equipmentCosts: 0,
-//         estimatedProfit: 0,
-//         machineOperatorSalary: 0,
-//         mainCosts: 0,
-//         materials: 0,
-//         mimExploitation: 0,
-//         overheads: 0,
-//         parentId: row.id,
-//         rowName: "string",
-//         salary: 0,
-//         supportCosts: 0
-//     });
-
-//     const handleDeleterow = (rowId: number): void => {
-//         deleteRow({ eID: EID, rID: rowId });
-//     };
-
-//     const handleAddChild = (rowId: number) => {
-//         setIsAddingChild(true);
-//         setNewChild((prevChild) => ({
-//             ...prevChild,
-//             parentId: rowId
-//         }));
-//     };
-
-//     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-//         const { name, value } = e.target;
-//         setNewChild((prevChild) => ({
-//             ...prevChild,
-//             [name]: value,
-//         }));
-//     };
-
-//     const handleKeyPress = (e: React.KeyboardEvent) => {
-//         if (e.key === 'Enter') {
-//             setIsAddingChild(false);
-//             createRow({
-//                 eID: EID,
-//                 body: newChild
-//             });
-//         }
-//     };
-
-//     useEffect(() => {
-//         if (isRowCreated || isRowDeleted) {
-//             getData(EID);
-//         }
-//     }, [isRowCreated, isRowDeleted]);
-
-//     return (
-//         <>
-//             <TableRow>
-//                 <TableCell sx={{ pl: depth * 2 + 1 }}>
-//                     <IconButton onClick={() => handleAddChild(row.id)}>
-//                         <TextSnippetIcon />
-//                     </IconButton>
-//                     <IconButton onClick={() => handleDeleterow(row.id)}>
-//                         <DeleteForeverIcon />
-//                     </IconButton>
-//                 </TableCell>
-//                 <TableCell>{row.rowName}</TableCell>
-//                 <TableCell>{row.salary}</TableCell>
-//                 <TableCell>{row.equipmentCosts}</TableCell>
-//                 <TableCell>{row.supportCosts}</TableCell>
-//                 <TableCell>{row.estimatedProfit}</TableCell>
-//             </TableRow>
-
-//             {row.child.length > 0 && row.child.map((childRow, index) => (
-//                 <Row key={childRow.id} row={childRow} depth={depth + 1} />
-//             ))}
-
-//             {isAddingChild && (
-//                 <UpdateRow newChild={newChild} handleInputChange={handleInputChange} handleKeyPress={handleKeyPress} />
-//             )}
-//         </>
-//     );
-// }
-
-// export default Row;
 
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { TableRow, TableCell, IconButton, Box } from '@mui/material';
-import { useEffect, useState } from 'react';
-import { CreateRowData, EntityType } from '../../types/types';
-import { useLazyCreateRowQuery, useLazyDeleteRowQuery, useLazyGetDataQuery } from '../../store/data-api';
+import { useEffect } from 'react';
+import { EntityType } from '../../types/types';
+import { useLazyDeleteRowQuery, useLazyGetDataQuery } from '../../store/data-api';
 import { EID } from '../../const/const';
 import UpdateRow from '../update-row/update-row';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { deleteRowFromState, setActiveRowId, setIsAddingRow, setIsUpdatingRow } from '../../store/app-slice';
+import { RenderLine } from '../render-line/render-line';
+
 
 type RowProps = {
     row: EntityType;
-    level: number; // добавлен уровень вложенности
+    level: number;
+    index?: number;
 };
 
-function Row({ row, level }: RowProps) {
-    const [getData, { data, isLoading }] = useLazyGetDataQuery();
-    //   const [createRow, { isSuccess: isRowCreated }] = useLazyCreateRowQuery();
+function Row({ row, level, index }: RowProps) {
+    const dispatch = useAppDispatch();
+    const isAddingRow = useAppSelector((state) => state.appSlice.isAddingRow);
+    const isUpdatingRow = useAppSelector((state) => state.appSlice.isUpdatingRow);
+    const activeRowId = useAppSelector((state) => state.appSlice.activeRowId);
+    const [getData, { data }] = useLazyGetDataQuery();
     const [deleteRow, { isSuccess: isRowDeleted }] = useLazyDeleteRowQuery();
-    const [isUpdatingRow, setIsUpdatingRow] = useState<boolean>(false);
-
-    const [isAddingChild, setIsAddingChild] = useState<boolean>(false);
-    //   const [newChild, setNewChild] = useState<CreateRowData>({
-    //     equipmentCosts: 0,
-    //     estimatedProfit: 0,
-    //     machineOperatorSalary: 0,
-    //     mainCosts: 0,
-    //     materials: 0,
-    //     mimExploitation: 0,
-    //     overheads: 0,
-    //     parentId: row.id,
-    //     rowName: "",
-    //     salary: 0,
-    //     supportCosts: 0
-    //   });
 
     const handleDeleterow = (rowId: number): void => {
-        deleteRow({ eID: EID, rID: rowId });
+        deleteRow({ eID: EID, rID: rowId })
+            .unwrap()
+                .then(() => dispatch(deleteRowFromState(rowId)))
     }
 
     const handleAddChild = (rowId: number) => {
-        setIsAddingChild(true);
-        // setNewChild((prevChild) => ({
-        //   ...prevChild,
-        //   parentId: rowId
-        // }));
+        if (isAddingRow || isUpdatingRow) {
+            return;
+        }
+        dispatch(setIsAddingRow(true));
+        dispatch(setActiveRowId(rowId));
     };
+
+    const handleDoubleClick = (id: number): void => {
+        if (isAddingRow) {
+            return;
+        }
+        dispatch(setIsUpdatingRow(true));
+        dispatch(setActiveRowId(id));
+    }
 
     useEffect(() => {
         if (isRowDeleted) {
@@ -295,18 +54,87 @@ function Row({ row, level }: RowProps) {
         }
     }, [isRowDeleted, data]);
 
-    return (
 
+    return (
         <>
-            {isUpdatingRow ? <UpdateRow setIsUpdatingRow={setIsUpdatingRow} rowId={row.id} /> :
-                <TableRow onDoubleClick={() => setIsUpdatingRow(true)}>
-                    <TableCell sx={{ pl: level * 4 }}> {/* Добавлен отступ */}
-                        <IconButton onClick={() => handleAddChild(row.id)}>
-                            <TextSnippetIcon />
-                        </IconButton>
-                        <IconButton onClick={() => handleDeleterow(row.id)}>
-                            <DeleteForeverIcon />
-                        </IconButton>
+            {isUpdatingRow && activeRowId === row.id ?
+                <UpdateRow rowId={row.id}/> :
+                <TableRow onDoubleClick={() => handleDoubleClick(row.id)}>
+                    <TableCell sx={{
+                            width: '240px',
+                            pl: level * 4,
+                            position: 'relative',
+                            '&:hover .delete-icon': {
+                                opacity: 1,
+                                transform: 'translateX(0)',
+                            },
+                            '&:hover .icons-wrapper': {
+                                bgcolor: 'lightGrey',
+                            },
+                            '& .icons-wrapper': {
+                                position: 'relative',
+                                '&::before': {
+                                    content: index === 0 ? 'none' : '""',
+                                    position: 'absolute',
+                                    right: '82%',
+                                    top: '50%',
+                                    width: '24px',
+                                    height: '1px', 
+                                    bgcolor: 'grey',
+                                    transform: 'translateY(-50%)', 
+                                },
+                                '&::after': {
+                                    content: index === 0 ? 'none' : '""',
+                                    position: 'absolute',
+                                    right: 'calc(80% + 23px)', 
+                                    top: '-16px',
+                                    width: '1px', 
+                                    height: `calc(100% + 32px)`,
+                                    bgcolor: 'grey',
+                                    transform: 'translateY(-50%)',
+                                },
+                            },
+                        }}>
+                        {level > 1 ? <RenderLine level={level} childLength={row.child.length} /> : ''}   
+                        <Box className="icons-wrapper" sx={{
+                            display: 'flex',
+                            position: 'relative',
+                            alignItems: 'center',
+                            width: '72px',
+                            height: '36px',
+                            borderRadius: '4px'
+                        }}>
+                            <IconButton onClick={() => handleAddChild(row.id)} sx={{
+                                    backgroundColor: 'transparent',
+                                    boxShadow: 'none',
+                                    zIndex: 10,
+                                    '&:hover': {
+                                        backgroundColor: 'transparent',
+                                        boxShadow: 'none',
+                                        transform: 'none',
+                                    }}}>
+                                <TextSnippetIcon />
+                            </IconButton>
+                            <IconButton className="delete-icon"
+                                onClick={() => handleDeleterow(row.id)}
+                                sx={{
+                                    color: 'red',
+                                    opacity: 0,
+                                    position: 'absolute',
+                                    left: 'calc(16px + 16px)',
+                                    transition: 'opacity 0.3s ease, transform 0.3s ease',
+                                    transform: 'translateX(-16px)',
+                                    backgroundColor: 'transparent',
+                                    boxShadow: 'none',
+                                    '&:hover': {
+                                        backgroundColor: 'transparent',
+                                        boxShadow: 'none',
+                                        transform: 'none',
+                                    }
+                                }}>
+                                <DeleteForeverIcon sx={{}}/>
+                            </IconButton>
+                        </Box>
                     </TableCell>
                     <TableCell>{row.rowName}</TableCell>
                     <TableCell>{row.salary}</TableCell>
@@ -314,23 +142,11 @@ function Row({ row, level }: RowProps) {
                     <TableCell>{row.supportCosts}</TableCell>
                     <TableCell>{row.estimatedProfit}</TableCell>
                 </TableRow>}
-
-            {row.child.length > 0 && row.child.map((childRow) => (
-                <Row key={childRow.id} row={childRow} level={level + 1} />
-            ))}
-            {isAddingChild && (
-                <TableRow>
-                    <TableCell sx={{ pl: (level + 1) * 4 }}> {/* Добавлен отступ */}
-                        <TextSnippetIcon />
-                    </TableCell>
-                    <TableCell colSpan={5}>
-                        <UpdateRow
-                            setIsAddingChild={setIsAddingChild}
-                            rowId={row.id}
-                        />
-                    </TableCell>
-                </TableRow>
-            )}
+                {row.child.length > 0 && row.child.map((childRow, index) => {
+                return (
+                    <Row key={childRow.id} row={childRow} level={level + 1} index={index + 1}/>
+                )
+            })}
         </>
     );
 }

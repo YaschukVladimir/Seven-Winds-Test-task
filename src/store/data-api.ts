@@ -8,7 +8,7 @@ type CreateRowRequest = {
 
 type UpdateRowRequest = {
     eID: number;
-    rID: number;
+    rID: number | null;
     body: CreateRowData;
 }
 
