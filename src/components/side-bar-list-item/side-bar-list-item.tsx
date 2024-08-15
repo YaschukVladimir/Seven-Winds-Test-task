@@ -11,7 +11,6 @@ export default function SelectedListItem() {
     const [selectedIndex, setSelectedIndex] = React.useState(1);
 
     const handleListItemClick = (
-        event: React.MouseEvent<HTMLDivElement, MouseEvent>,
         index: number,
     ) => {
         setSelectedIndex(index);
@@ -24,7 +23,7 @@ export default function SelectedListItem() {
                     return (
                         <ListItemButton key={item}
                             selected={selectedIndex === 0}
-                            onClick={(event) => handleListItemClick(event, 0)}
+                            onClick={() => handleListItemClick(0)}
                         >
                             <ListItemIcon>
                                 <ViewQuiltIcon />
